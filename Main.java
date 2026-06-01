@@ -9,5 +9,10 @@ public class Main {
         else {
             System.out.println("No");
         }
+        Book book1 = new Book("Harry Potter");
+        System.out.println("Book Name: " + book1.bookName);
+        System.out.println("Book Author: " + book1.author);
+        book1.author = "JK Rowling";
+        System.out.println("Book Author: " + book1.author);
     }
 }
