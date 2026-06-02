@@ -1,4 +1,6 @@
+package Classes;
 import java.util.ArrayList;
+
 public class Librarian extends User {
     //Define variables
     private int librarian_id;
@@ -11,7 +13,7 @@ public class Librarian extends User {
     public Librarian(int librarian_id, String name, String email, int staffNumber) {
         super(librarian_id, name, email); 
         this.staffNumber = staffNumber;
-        this.managedBooks = new ArrayList<>();
+        this.managedBooks = new ArrayList<Book>();
     }
 
     //Getters and setters
@@ -45,7 +47,5 @@ public class Librarian extends User {
     public void setManagedBooks(Book managedBooks) {
         this.managedBooks.add(managedBooks);
     }
-    
-    //Methods
-    
+        
 }

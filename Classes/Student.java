@@ -1,10 +1,15 @@
+package Classes;
 import java.util.ArrayList;
+import Exceptions.ReservationLimitException;
+
 public class Student extends User {
     //Define variables
     private int student_id;
     private String name;
     private String email;
     private String major;
+    public static final int maxBorrowed = 5;
+    public static final int maxReserved = 3;
     private ArrayList<Book> borrowedBooks;
     private ArrayList<Book> reservedBooks;
 
@@ -16,8 +21,8 @@ public class Student extends User {
     public Student(int student_id, String name, String email, String major) {
         super(student_id, name, email); 
         this.major = major;
-        this.borrowedBooks = new ArrayList<>();
-        this.reservedBooks = new ArrayList<>();
+        this.borrowedBooks = new ArrayList<Book>();
+        this.reservedBooks = new ArrayList<Book>();
     }
     
     //Getters and setters
@@ -59,6 +64,23 @@ public class Student extends User {
     }
 
     //Methods
-    
+    public void addBorrowedBook(Book book) {
+        if (borrowedBooks.size() >= maxBorrowed) {
+            System.out.println("Error: Cannot borrow more than " + maxBorrowed + " books.");
+            return;
+        }
+        borrowedBooks.add(book);
+    }
+
+    public void addReservedBook(Book book) throws ReservationLimitException {
+        if(reservedBooks.size()>=maxReserved) {
+            throw new ReservationLimitException("Error: Cannot reserve more than " + maxReserved + " books."); //Need to create this exception class
+        }
+        reservedBooks.add(book);
+    }
+
+    public void removeBorrowedBook(Book book) {
+        borrowedBooks.remove(book);
+    }
 
 }

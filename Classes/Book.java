@@ -1,21 +1,24 @@
+package Classes;
+import Exceptions.InvalidBookDataException;
+
 public class Book {
     //Define variables
     private int book_id;
-    private String bookTitle;
+    private String title;
     private String author;
     private String category;
     private int isbn;
-    private int numOfCopies;
+    private int availableCopies;
     private int publicationDate;
 
     //Constructor
-    Book(int book_id, String bookTitle, String author, String category, int isbn, int numOfCopies, int publicationDate) {
+    public Book(int book_id, String title, String author, String category, int isbn, int availableCopies, int publicationDate) {
         this.book_id=book_id;
-        this.bookTitle=bookTitle;
+        this.title=title;
         this.author=author;
         this.category=category;
         this.isbn=isbn;
-        this.numOfCopies=numOfCopies;
+        this.availableCopies=availableCopies;
         this.publicationDate=publicationDate;
     }
 
@@ -26,11 +29,11 @@ public class Book {
     public void setBook_id(int book_id) {
         this.book_id = book_id;
     }
-    public String getBookTitle() {
-        return bookTitle;
+    public String getTitle() {
+        return title;
     }
-    public void setBookTitle(String bookTitle) {
-        this.bookTitle = bookTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
     public String getAuthor() {
         return author;
@@ -50,11 +53,14 @@ public class Book {
     public void setIsbn(int isbn) {
         this.isbn = isbn;
     }
-    public int getNumOfCopies() {
-        return numOfCopies;
+    public int getAvailableCopies() {
+        return availableCopies;
     }
-    public void setNumOfCopies(int numOfCopies) {
-        this.numOfCopies = numOfCopies;
+    public void setAvailableCopies(int availableCopies) throws InvalidBookDataException {
+        if (availableCopies < 0) {
+            throw new InvalidBookDataException("Number of copies cannot be negative."); //Need to create this custom exception class
+        }
+        this.availableCopies = availableCopies;
     }
     public int getPublicationDate() {
         return publicationDate;

@@ -1,3 +1,4 @@
+package Classes;
 public abstract class User {
     //Define Variables
     private int user_id;
@@ -41,15 +42,10 @@ public abstract class User {
     public void setNotifyByEmail(boolean notifyByEmail) {
         this.notifyByEmail = notifyByEmail;
     }
-    
-    //Methods
 
     //Authentication Method
     public boolean authenticate(int id, String email) {
         return this.user_id == id && this.email.equals(email);
     }
-
-    //Notifcation Preference For Due Dates and Reservations Updates
-
 
 }
