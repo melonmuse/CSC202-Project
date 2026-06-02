@@ -1,4 +1,5 @@
 package Classes;
+import java.time.Year;
 import Exceptions.InvalidBookDataException;
 
 public class Book {
@@ -7,19 +8,19 @@ public class Book {
     private String title;
     private String author;
     private String category;
-    private int isbn;
+    private String isbn;
     private int availableCopies;
     private int publicationDate;
 
     //Constructor
-    public Book(int book_id, String title, String author, String category, int isbn, int availableCopies, int publicationDate) {
+    public Book(int book_id, String title, String author, String category, String isbn, int availableCopies, int publicationDate) throws InvalidBookDataException {
         this.book_id=book_id;
         this.title=title;
         this.author=author;
         this.category=category;
         this.isbn=isbn;
-        this.availableCopies=availableCopies;
-        this.publicationDate=publicationDate;
+        setAvailableCopies(availableCopies);
+        setPublicationDate(publicationDate);
     }
 
     //Getters and Setters
@@ -47,10 +48,10 @@ public class Book {
     public void setCategory(String category) {
         this.category = category;
     }
-    public int getIsbn() {
+    public String getIsbn() {
         return isbn;
     }
-    public void setIsbn(int isbn) {
+    public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
     public int getAvailableCopies() {
@@ -65,7 +66,11 @@ public class Book {
     public int getPublicationDate() {
         return publicationDate;
     }
-    public void setPublicationDate(int publicationDate) {
+    public void setPublicationDate(int publicationDate) throws InvalidBookDataException {
+        int currentYear = Year.now().getValue();
+        if (publicationDate < 1000 || publicationDate > currentYear) {
+            throw new InvalidBookDataException("Invalid publication year: " + publicationDate);
+        }
         this.publicationDate = publicationDate;
     }
     
