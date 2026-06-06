@@ -15,6 +15,7 @@ import Interfaces.BookSearchEngine;
 //1. Compile all Java files:
 //javac -cp . Main.java Classes/*.java Interfaces/*.java Exceptions/*.java
 //2. Run the program:
+
 //java Main
 
 public class Main {
@@ -24,7 +25,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException, InvalidBookDataException {
         //Setup
-        Librarian sara = new Librarian(1, "Sara", "sara@uni.edu", 100);
+        Librarian sara = new Librarian(1, "Sara", "sara@uni.edu", 100, true);
 
         library.addBook(new Book(1, "Clean Code",                 "Robert Martin",       "Programming",      "978-0132350884", 2, 2008));
         library.addBook(new Book(2, "Java Programming",           "Daniel Liang",        "Programming",      "978-0134670942", 3, 2018));
@@ -32,9 +33,9 @@ public class Main {
         library.addBook(new Book(4, "Database Systems",           "Ramez Elmasri",       "Databases",        "978-0133970777", 2, 2015));
         library.addBook(new Book(5, "Operating System Concepts",  "Abraham Silberschatz","Computer Science", "978-1119800361", 2, 2018));
 
-        library.registerStudent(new Student(1, "Abeer",  "abeer@uni.edu",  "Software Engineering"));
-        library.registerStudent(new Student(2, "Salma",  "salma@uni.edu",  "Computer Engineering"));
-        library.registerStudent(new Student(3, "Omaima", "omaima@uni.edu", "Computer Engineering"));
+        library.registerStudent(new Student(1, "Abeer",  "abeer@uni.edu",  "Software Engineering", true));
+        library.registerStudent(new Student(2, "Salma",  "salma@uni.edu",  "Computer Engineering", true));
+        library.registerStudent(new Student(3, "Omaima", "omaima@uni.edu", "Computer Engineering", false));
 
         library.addStudyRoom("Room A");
         library.addStudyRoom("Room B");
@@ -307,7 +308,14 @@ public class Main {
             System.out.println("Invalid selection.");
             return null;
         }
-        return students.get(idx);
+        Student student = students.get(idx);
+        System.out.print("Enter email to confirm identity: ");
+        String email = scanner.nextLine().trim();
+        if (!student.authenticate(student.getUserID(), email)) {
+            System.out.println("Authentication failed.");
+            return null;
+        }
+        return student;
     }
 
     private static Book pickBook() {

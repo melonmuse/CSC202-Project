@@ -7,8 +7,8 @@ public class Librarian extends User {
     private ArrayList<Book> managedBooks;
 
     //Constructor
-    public Librarian(int librarian_id, String name, String email, int staffNumber) {
-        super(librarian_id, name, email); 
+    public Librarian(int librarian_id, String name, String email, int staffNumber, boolean notifyByEmail) {
+        super(librarian_id, name, email, notifyByEmail); 
         this.staffNumber = staffNumber;
         this.managedBooks = new ArrayList<Book>();
     }

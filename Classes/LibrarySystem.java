@@ -194,7 +194,7 @@ public class LibrarySystem {
                     continue;
                 }
                 String[] fields = line.split("\\" + SEP);
-                Student s = new Student(Integer.parseInt(fields[0]), fields[1], fields[2], fields[3]);
+                Student s = new Student(Integer.parseInt(fields[0]), fields[1], fields[2], fields[3], true);
                 s.setNotifyByEmail(Boolean.parseBoolean(fields[4]));
                 students.add(s);
             }

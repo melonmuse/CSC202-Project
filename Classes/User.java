@@ -7,11 +7,11 @@ public abstract class User {
     private boolean notifyByEmail;
 
     //Constructor
-    public User(int user_id, String name, String email) {
+    public User(int user_id, String name, String email, boolean notifyByEmail) {
         this.user_id = user_id;
         this.name = name;
         setEmail(email);
-        this.notifyByEmail = true;
+        this.notifyByEmail = notifyByEmail;
     }   
 
     //Getters and setters

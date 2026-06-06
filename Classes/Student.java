@@ -11,8 +11,8 @@ public class Student extends User {
     private ArrayList<Book> reservedBooks;
 
     //Constructor
-    public Student(int student_id, String name, String email, String major) {
-        super(student_id, name, email);
+    public Student(int student_id, String name, String email, String major, boolean notifyByEmail) {
+        super(student_id, name, email, notifyByEmail);
         this.major = major;
         this.borrowedBooks = new ArrayList<Book>();
         this.reservedBooks = new ArrayList<Book>();
