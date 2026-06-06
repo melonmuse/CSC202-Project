@@ -3,8 +3,6 @@ import java.util.ArrayList;
 import Classes.Book;
 
 public class BookSearchEngine implements IBookSearch {
-
-    // Association: the engine works on the library's catalog.
     private ArrayList<Book> catalog;
 
     public BookSearchEngine(ArrayList<Book> catalog) {
@@ -58,10 +56,6 @@ public class BookSearchEngine implements IBookSearch {
         return results;
     }
 
-    /**
-     * Helper: sort a list of books alphabetically by title using a simple
-     * selection sort (smallest title moved to the front each pass).
-     */
     private void sortByTitle(ArrayList<Book> books) {
         for (int i = 0; i < books.size() - 1; i++) {
             int minIndex = i;

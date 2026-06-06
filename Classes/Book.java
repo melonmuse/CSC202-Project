@@ -68,12 +68,13 @@ public class Book {
     }
     public void setPublicationYear(int publicationYear) throws InvalidBookDataException {
         int currentYear = Year.now().getValue();
-        if (publicationYear > currentYear) {
+        if (publicationYear > currentYear || publicationYear < 1000) {
             throw new InvalidBookDataException("Invalid publication year: " + publicationYear);
         }
         this.publicationYear = publicationYear;
     }
 
+    //Method to check availability
     public boolean isAvailable() {
         return availableCopies > 0;
     }

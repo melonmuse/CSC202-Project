@@ -1,3 +1,4 @@
+package Classes;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -5,8 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import Classes.Book;
-import Classes.Student;
+
 import Exceptions.BookUnavailableException;
 import Exceptions.InvalidBookDataException;
 import Exceptions.ReservationLimitException;
@@ -15,20 +15,19 @@ public class LibrarySystem {
     private ArrayList<Book> catalog;
     private ArrayList<Student> students;
 
-    // Reservation waiting list, in the order students reserved.
-    // queueBookIds.get(i) is the book reserved by queueStudents.get(i).
+    // Reservation waiting list
     private ArrayList<Integer> queueBookIds;
     private ArrayList<Student> queueStudents;
 
-    // Study rooms. roomNames.get(i) is available when roomAvailable.get(i) is true.
+    // Study rooms
     private ArrayList<String> roomNames;
     private ArrayList<Boolean> roomAvailable;
 
-    // File names used for persistence.
+    // File names
     private static final String BOOKS_FILE = "books.txt";
     private static final String STUDENTS_FILE = "students.txt";
     private static final String TRANSACTIONS_FILE = "transactions.txt";
-    private static final String SEP = "|";   // field separator in the files
+    private static final String SEP = "|";  
 
     public LibrarySystem() {
         this.catalog = new ArrayList<Book>();
@@ -39,15 +38,13 @@ public class LibrarySystem {
         this.roomAvailable = new ArrayList<Boolean>();
     }
 
-    // ----- Catalog management -----
-
+    //Catalog Management: Add, Remove, View Books, View Students, and Register Students
     public void addBook(Book book) {
         catalog.add(book);
     }
 
     public void removeBook(Book book) {
         catalog.remove(book);
-        // Remove any reservations waiting for this book.
         for (int i = queueBookIds.size() - 1; i >= 0; i--) {
             if (queueBookIds.get(i).equals(book.getBookID())) {
                 queueBookIds.remove(i);
@@ -68,13 +65,7 @@ public class LibrarySystem {
         students.add(student);
     }
 
-    // ----- Borrowing and returning -----
-
-    /**
-     * Borrows a book for a student. Throws BookUnavailableException when no
-     * copies are available. The student's borrow limit is enforced inside
-     * Student.addBorrowedBook.
-     */
+    //Borrowing and Returning Books
     public void borrowBook(Student student, Book book)
             throws BookUnavailableException, IOException {
         if (!book.isAvailable()) {
@@ -86,10 +77,6 @@ public class LibrarySystem {
         logTransaction("BORROW", student, book);
     }
 
-    /**
-     * Returns a borrowed book: restores a copy and then gives the book to the
-     * next student waiting in its reservation queue, if any.
-     */
     public void returnBook(Student student, Book book) throws IOException {
         student.removeBorrowedBook(book);
         updateAvailability(book, +1);                  // one more copy
@@ -97,31 +84,21 @@ public class LibrarySystem {
         fulfillNextReservation(book);
     }
 
-    // ----- Reservations -----
-
-    /**
-     * Reserves a book for a student. Throws ReservationLimitException when the
-     * student already has the maximum number of reservations.
-     */
+    //Book Reservations and Waiting List
     public void reserveBook(Student student, Book book)
             throws ReservationLimitException, IOException {
-        student.addReservedBook(book);                 // checks reservation limit
+        student.addReservedBook(book);            
 
-        // Add the student to the back of the waiting list for this book.
         queueBookIds.add(book.getBookID());
         queueStudents.add(student);
         logTransaction("RESERVE", student, book);
     }
 
-    /**
-     * If a returned book has students waiting and a copy is available, give it
-     * to the first student in line (moves it from reserved to borrowed).
-     */
+    //Move student from reserved to borrowed if a copy becomes available
     private void fulfillNextReservation(Book book) throws IOException {
         if (!book.isAvailable()) {
             return;
         }
-        // Find the first (oldest) reservation for this book.
         for (int i = 0; i < queueBookIds.size(); i++) {
             if (queueBookIds.get(i).equals(book.getBookID())) {
                 Student next = queueStudents.get(i);
@@ -136,31 +113,21 @@ public class LibrarySystem {
         }
     }
 
-    // ----- Availability -----
-
-    /**
-     * Changes the available copies of a book by the given amount.
-     * delta is -1 when borrowing and +1 when returning.
-     */
-    private void updateAvailability(Book book, int delta) {
+    //Availability
+    private void updateAvailability(Book book, int remove) {
         try {
-            book.setAvailableCopies(book.getAvailableCopies() + delta);
+            book.setAvailableCopies(book.getAvailableCopies() + remove);
         } catch (InvalidBookDataException e) {
-            // This should not happen during normal borrow/return operations.
             System.out.println("Availability error: " + e.getMessage());
         }
     }
 
-    // ----- Study rooms -----
-
+    //Study Room Booking
     public void addStudyRoom(String roomName) {
         roomNames.add(roomName);
-        roomAvailable.add(true);   // true = available
+        roomAvailable.add(true);
     }
 
-    /**
-     * Books a study room for a student if it is free. Returns true on success.
-     */
     public boolean bookStudyRoom(Student student, String roomName) throws IOException {
         for (int i = 0; i < roomNames.size(); i++) {
             if (roomNames.get(i).equals(roomName) && roomAvailable.get(i)) {
@@ -180,9 +147,7 @@ public class LibrarySystem {
         return roomAvailable;
     }
 
-    // ----- File I/O (Task 8) -----
-
-    /** Saves the whole catalog to books.txt. */
+    //File I/O
     public void saveBooks() throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(BOOKS_FILE))) {
             for (Book b : catalog) {
@@ -194,7 +159,6 @@ public class LibrarySystem {
         }
     }
 
-    /** Loads the catalog from books.txt (replacing the current catalog). */
     public void loadBooks() throws IOException, InvalidBookDataException {
         catalog.clear();
         try (BufferedReader reader = new BufferedReader(new FileReader(BOOKS_FILE))) {
@@ -211,7 +175,6 @@ public class LibrarySystem {
         }
     }
 
-    /** Saves all registered students to students.txt. */
     public void saveStudents() throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(STUDENTS_FILE))) {
             for (Student s : students) {
@@ -222,7 +185,6 @@ public class LibrarySystem {
         }
     }
 
-    /** Loads students from students.txt (replacing the current list). */
     public void loadStudents() throws IOException {
         students.clear();
         try (BufferedReader reader = new BufferedReader(new FileReader(STUDENTS_FILE))) {
@@ -239,10 +201,7 @@ public class LibrarySystem {
         }
     }
 
-    /**
-     * Appends a borrowing/reservation record to transactions.txt.
-     * book may be null for non-book actions such as room bookings.
-     */
+    //Appends a borrowing/reservation record to transactions.txt.
     private void logTransaction(String action, Student student, Book book) throws IOException {
         try (BufferedWriter writer =
                      new BufferedWriter(new FileWriter(TRANSACTIONS_FILE, true))) {
