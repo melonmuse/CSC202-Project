@@ -1,0 +1,3 @@
+1|Abeer|abeer@uni.edu|Computer Science|true
+2|Salma|salma@uni.edu|Engineering|true
+3|Omaima|omaima@uni.edu|Mathematics|true

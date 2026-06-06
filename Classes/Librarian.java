@@ -23,8 +23,11 @@ public class Librarian extends User {
     public ArrayList<Book> getManagedBooks() {
         return managedBooks;
     }
-    public void setManagedBooks(Book managedBooks) {
-        this.managedBooks.add(managedBooks);
+    public void addManagedBook(Book book) {
+        this.managedBooks.add(book);
+    }
+    public String getUserType() {
+        return "Librarian";
     }
         
 }

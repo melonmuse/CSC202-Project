@@ -4,31 +4,31 @@ import Exceptions.InvalidBookDataException;
 
 public class Book {
     //Define variables
-    private int book_id;
+    private int bookID;
     private String title;
     private String author;
     private String category;
-    private String isbn;
+    private String ISBN;
     private int availableCopies;
-    private int publicationDate;
+    private int publicationYear;
 
     //Constructor
-    public Book(int book_id, String title, String author, String category, String isbn, int availableCopies, int publicationDate) throws InvalidBookDataException {
-        this.book_id=book_id;
+    public Book(int bookID, String title, String author, String category, String ISBN, int availableCopies, int publicationYear) throws InvalidBookDataException {
+        this.bookID=bookID;
         this.title=title;
         this.author=author;
         this.category=category;
-        this.isbn=isbn;
+        this.ISBN=ISBN;
         setAvailableCopies(availableCopies);
-        setPublicationDate(publicationDate);
+        setPublicationYear(publicationYear);
     }
 
     //Getters and Setters
-    public int getBook_id() {
-        return book_id;
+    public int getBookID() {
+        return bookID;
     }
-    public void setBook_id(int book_id) {
-        this.book_id = book_id;
+    public void setBookID(int bookID) {
+        this.bookID = bookID;
     }
     public String getTitle() {
         return title;
@@ -48,30 +48,34 @@ public class Book {
     public void setCategory(String category) {
         this.category = category;
     }
-    public String getIsbn() {
-        return isbn;
+    public String getISBN() {
+        return ISBN;
     }
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
+    public void setISBN(String ISBN) {
+        this.ISBN = ISBN;
     }
     public int getAvailableCopies() {
         return availableCopies;
     }
     public void setAvailableCopies(int availableCopies) throws InvalidBookDataException {
         if (availableCopies < 0) {
-            throw new InvalidBookDataException("Number of copies cannot be negative."); //Need to create this custom exception class
+            throw new InvalidBookDataException("Number of copies cannot be negative."); 
         }
         this.availableCopies = availableCopies;
     }
-    public int getPublicationDate() {
-        return publicationDate;
+    public int getPublicationYear() {
+        return publicationYear;
     }
-    public void setPublicationDate(int publicationDate) throws InvalidBookDataException {
+    public void setPublicationYear(int publicationYear) throws InvalidBookDataException {
         int currentYear = Year.now().getValue();
-        if (publicationDate < 1000 || publicationDate > currentYear) {
-            throw new InvalidBookDataException("Invalid publication year: " + publicationDate);
+        if (publicationYear > currentYear) {
+            throw new InvalidBookDataException("Invalid publication year: " + publicationYear);
         }
-        this.publicationDate = publicationDate;
+        this.publicationYear = publicationYear;
+    }
+
+    public boolean isAvailable() {
+        return availableCopies > 0;
     }
     
 }
